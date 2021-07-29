@@ -13,7 +13,9 @@ GameObject:
   - component: {fileID: 7999652367142584537}
   - component: {fileID: 7999652367142584538}
   - component: {fileID: 7999652367142584539}
+  - component: {fileID: 928316982947494670}
   - component: {fileID: 773669209062907293}
+  - component: {fileID: 7301660702156624213}
   m_Layer: 6
   m_Name: MovingPlatform
   m_TagString: Untagged
@@ -338,6 +340,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!65 &928316982947494670
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7999652367142584548}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10, y: 2, z: 13.75}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &773669209062907293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -356,3 +371,15 @@ MonoBehaviour:
   endPositionDelay: 0
   toEndPositionMoveTime: 1
   toStartPositionMoveTime: 1
+--- !u!114 &7301660702156624213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7999652367142584548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca260df338c7518488eef999757ff710, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

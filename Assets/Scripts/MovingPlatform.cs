@@ -1,5 +1,8 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
+
+[RequireComponent(typeof(PlatformTriggerHandler))]
 
 public class MovingPlatform : MonoBehaviour
 {
@@ -15,16 +18,24 @@ public class MovingPlatform : MonoBehaviour
 
     private void Start()
     {
-        StartMove();
+        StartMove(-1);
     }
 
-    private void StartMove()
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(startPosition, 0.5f);
+        Gizmos.DrawSphere(endPosition, 0.5f);
+        Gizmos.DrawLine(startPosition, endPosition);
+    }
+
+    private void StartMove(int loops)
     {
         Sequence sequence = DOTween.Sequence();
         sequence.AppendInterval(startPositionDelay);
         sequence.Append(transform.DOLocalMove(endPosition, toEndPositionMoveTime).SetEase(Ease.Linear));
         sequence.AppendInterval(endPositionDelay);
         sequence.Append(transform.DOLocalMove(startPosition, toStartPositionMoveTime).SetEase(Ease.Linear));
-        sequence.SetLoops(-1);
+        sequence.SetLoops(loops);
     }
 }
