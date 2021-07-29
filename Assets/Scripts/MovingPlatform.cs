@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
@@ -20,21 +17,6 @@ public class MovingPlatform : MonoBehaviour
     {
         StartMove();
     }
-
-    //private void Update()
-    //{
-    //    var target = isMoveToEnd ? endPosition : startPosition;
-    //    var time = isMoveToEnd ? toEndPositionMoveTime : toStartPositionMoveTime; 
-    //    var speed = Vector3.Distance(endPosition, startPosition) / time;
-    //    var step = speed * Time.deltaTime;
-        
-    //    transform.position = Vector3.MoveTowards(transform.position, target, step);
-
-    //    if (transform.position == target)
-    //    {
-    //        isMoveToEnd = !isMoveToEnd;
-    //    }
-    //}
 
     private void StartMove()
     {
