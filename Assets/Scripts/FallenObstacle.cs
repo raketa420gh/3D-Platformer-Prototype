@@ -1,10 +1,7 @@
-using System;
 using DG.Tweening;
 using UnityEngine;
 
-[RequireComponent(typeof(MoveWithPlayer))]
-
-public class MovingPlatform : MonoBehaviour
+public class FallenObstacle : MonoBehaviour
 {
     [Header("Move Settings")] 
     [SerializeField] private Vector3 startPosition;
@@ -12,15 +9,8 @@ public class MovingPlatform : MonoBehaviour
 
     [Header("Timing Settings")] 
     [SerializeField] private float startPositionDelay;
-    [SerializeField] private float endPositionDelay;
     [SerializeField] private float toEndPositionMoveTime;
-    [SerializeField] private float toStartPositionMoveTime;
-
-    private void Start()
-    {
-        StartMove(-1);
-    }
-
+    
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
@@ -28,14 +18,25 @@ public class MovingPlatform : MonoBehaviour
         Gizmos.DrawSphere(endPosition, 0.5f);
         Gizmos.DrawLine(startPosition, endPosition);
     }
-
-    private void StartMove(int loops)
+    
+    public void StartFall()
     {
         Sequence sequence = DOTween.Sequence();
         sequence.AppendInterval(startPositionDelay);
         sequence.Append(transform.DOLocalMove(endPosition, toEndPositionMoveTime).SetEase(Ease.Linear));
-        sequence.AppendInterval(endPositionDelay);
-        sequence.Append(transform.DOLocalMove(startPosition, toStartPositionMoveTime).SetEase(Ease.Linear));
-        sequence.SetLoops(loops);
+        sequence.SetLoops(1);
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (IsPlayerInsideTrigger(other))
+        {
+            StartFall();
+        }
+    }
+    
+    private bool IsPlayerInsideTrigger(Collider other)
+    {
+        return other.gameObject.CompareTag(TagsNames.Player);
     }
 }

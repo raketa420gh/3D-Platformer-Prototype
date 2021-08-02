@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlatformTriggerHandler : MonoBehaviour
+public class MoveWithPlayer : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
