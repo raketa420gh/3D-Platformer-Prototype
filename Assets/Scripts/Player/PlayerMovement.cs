@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-
-[RequireComponent(typeof(CharacterController))]
-[RequireComponent(typeof(PlayerMouseLook))]
+﻿using System;
+using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -11,10 +9,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundDistance = 0.4f;
     [SerializeField] private LayerMask groundMask;
-    [SerializeField] private AnimationCurve jumpCurve;
     [SerializeField] private float jumpHeight = 5f;
+    //[SerializeField] private AnimationCurve jumpCurve;
 
-    [Header("Movement Settings")]
+    [Header("Movement Settings")] 
+    [SerializeField] private Transform body;
     [SerializeField] private float speed = 10f;
     
     private Transform selfTransform;
@@ -22,6 +21,13 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 velocity;
     private bool isGrounded;
     private float gravity = -9.81f;
+
+    #endregion
+
+
+    #region Events
+
+    public static event Action OnJumped;
 
     #endregion
     
@@ -33,13 +39,23 @@ public class PlayerMovement : MonoBehaviour
         controller = GetComponent<CharacterController>();
         selfTransform = transform;
     }
+
+    private void OnEnable()
+    {
+        Player.OnDied += DisableController;
+    }
     
+    private void OnDisable()
+    {
+        Player.OnDied -= DisableController;
+    }
+
     private void Update()
     {
         float xInput = Input.GetAxis(AxisNames.Horizontal);
         float zInput = Input.GetAxis(AxisNames.Vertical);
 
-        Vector3 inputDirection = selfTransform.right * xInput + selfTransform.forward * zInput;
+        Vector3 inputDirection = body.right * xInput + body.forward * zInput;
         
         Move(inputDirection);
         CheckGround();
@@ -80,6 +96,12 @@ public class PlayerMovement : MonoBehaviour
     private void Jump()
     {
         velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        OnJumped?.Invoke();
+    }
+
+    private void DisableController()
+    {
+        controller.enabled = false;
     }
 
     #endregion
