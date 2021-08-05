@@ -6,6 +6,7 @@ public class Coin : MonoBehaviour
     public static event Action OnCreated;
     public static event Action OnCollected;
     
+
     private void Awake()
     {
         OnCreated?.Invoke();
