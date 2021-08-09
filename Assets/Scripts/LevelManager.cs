@@ -6,11 +6,12 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     [SerializeField] private SceneLoader sceneLoader;
     [SerializeField] private float restartLevelDelay;
 
-    private int coinsCollected;
-    private int coinsRemains;
+    private int allCoins;
+    private int collectedCoins;
 
     private void OnEnable()
     {
+        SceneLoader.OnSceneLoaded += SceneLoaderOnSceneLoaded;
         Player.OnDied += PlayerOnDied;
         Coin.OnCreated += CoinOnCreated;
         Coin.OnCollected += CoinOnCollected;
@@ -18,25 +19,37 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
     private void OnDisable()
     {
+        SceneLoader.OnSceneLoaded -= SceneLoaderOnSceneLoaded;
         Player.OnDied -= PlayerOnDied;
         Coin.OnCreated -= CoinOnCreated;
         Coin.OnCollected -= CoinOnCollected;
     }
 
-    private void RestartLevel()
+    private void CalculateAllCoins()
     {
-        sceneLoader.LoadScene(0);
+        allCoins ++;
+        
+        Debug.Log($"Всего монет осталось = {allCoins}");
     }
 
-    private void ResetCollectedCoins()
+    private void CollectCoin()
     {
-        coinsCollected = 0;
+        allCoins--;
+        collectedCoins ++;
+        
+        Debug.Log($"Вы подобрали монету. Всего {collectedCoins}");
+
+        if (allCoins <= 0)
+        {
+            Debug.Log($"Всего монет осталось = {allCoins}");
+            StartCoroutine(RestartLevelFromDelay());
+        }
     }
 
     private IEnumerator RestartLevelFromDelay()
     {
         yield return new WaitForSeconds(restartLevelDelay);
-        RestartLevel();
+        sceneLoader.ReloadScene();
     }
 
     private void PlayerOnDied()
@@ -46,22 +59,17 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
     private void CoinOnCollected()
     {
-        coinsRemains -= 1;
-        coinsCollected += 1;
-        
-        Debug.Log($"Собрано {coinsCollected} монет");
-
-        if (coinsRemains <= 0)
-        {
-            Debug.Log($"Всего монет осталось = {coinsRemains}");
-            StartCoroutine(RestartLevelFromDelay());
-        }
+        CollectCoin();
     }
 
     private void CoinOnCreated()
     {
-        coinsRemains += 1;
-        
-        Debug.Log($"Всего монет осталось = {coinsRemains}");
+        CalculateAllCoins();
+    }
+
+    private void SceneLoaderOnSceneLoaded()
+    {
+        allCoins = 0;
+        collectedCoins = 0;
     }
 }
