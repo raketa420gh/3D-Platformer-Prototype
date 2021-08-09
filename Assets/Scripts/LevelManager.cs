@@ -5,6 +5,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 {
     [SerializeField] private SceneLoader sceneLoader;
     [SerializeField] private float restartLevelDelay;
+    [SerializeField] private Teleport finishLevelTeleport;
 
     private int allCoins;
     private int collectedCoins;
@@ -44,6 +45,11 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
             Debug.Log($"Всего монет осталось = {allCoins}");
             StartCoroutine(RestartLevelFromDelay());
         }
+    }
+
+    private void InstantiateTeleport()
+    {
+        
     }
 
     private IEnumerator RestartLevelFromDelay()
